@@ -42,7 +42,7 @@ export default function Drafts() {
 
   return (
     <StyledDrafts>
-      {platform === "darwin" && <StyledTrafficLights />}
+      {platform === "darwin" && <StyledTrafficLights data-tauri-drag-region />}
       <StyledSmallButton isActive={!isDraft}>
         <Icon type={!isDraft ? "grid-f" : "grid"} size={18} />
       </StyledSmallButton>

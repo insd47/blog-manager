@@ -5,7 +5,7 @@ import "./global.scss";
 
 import { ThemeProvider } from "@insd47/library";
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById("frame") as HTMLElement).render(
   <React.StrictMode>
     <ThemeProvider>
       <Frame />

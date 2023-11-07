@@ -7,8 +7,8 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "manager",
-    "version": "0.0.0"
+    "productName": "Blog Manager",
+    "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
@@ -19,12 +19,16 @@
       },
       "os": {
         "all": true
+      },
+      "window": {
+        "all": false,
+        "startDragging": true
       }
     },
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "dev.insd.blogmanager",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -35,15 +39,6 @@
     },
     "security": {
       "csp": null
-    },
-    "windows": [
-      {
-        "fullscreen": false,
-        "resizable": true,
-        "title": "manager",
-        "width": 800,
-        "height": 600
-      }
-    ]
+    }
   }
 }

@@ -14,6 +14,8 @@ import bgLight2x from "./assets/bg-light@2x.png";
 import bgLight3x from "./assets/bg-light@3x.png";
 
 import { Link } from "react-router-dom";
+import { invoke } from "@tauri-apps/api/tauri";
+import { API_USER_LOGIN } from "@/tools/commands";
 
 type FieldType = "email" | "password";
 
@@ -77,31 +79,31 @@ export default function Login() {
   const sendRequest = async () => {
     setIsLoading(true);
 
-    // const status = await window.electron.api.user.login({
-    //   email: formData.email.value,
-    //   password: formData.password.value,
-    // });
+    const status = await invoke(API_USER_LOGIN, {
+      email: formData.email.value,
+      password: formData.password.value,
+    }).catch((e) => e as number);
 
-    // switch (status) {
-    //   case 400:
-    //     setError("입력 형식이 올바르지 않습니다.");
-    //     break;
-    //   case 401:
-    //     setError("이메일 주소 또는 비밀번호가 올바르지 않습니다.");
-    //     setFormData({
-    //       email: { ...formData.email, error: true },
-    //       password: { ...formData.password, error: true },
-    //     });
-    //     emailRef.current?.focus();
-    //     break;
-    //   case 403:
-    //     setError("해당 계정은 접근 권한이 없습니다.");
-    //     break;
-    //   case 500:
-    //   default:
-    //     setError("알 수 없는 오류가 발생했습니다.");
-    //     break;
-    // }
+    switch (status) {
+      case 400:
+        setError("입력 형식이 올바르지 않습니다.");
+        break;
+      case 401:
+        setError("이메일 주소 또는 비밀번호가 올바르지 않습니다.");
+        setFormData({
+          email: { ...formData.email, error: true },
+          password: { ...formData.password, error: true },
+        });
+        emailRef.current?.focus();
+        break;
+      case 403:
+        setError("해당 계정은 접근 권한이 없습니다.");
+        break;
+      case 500:
+      default:
+        setError("알 수 없는 오류가 발생했습니다.");
+        break;
+    }
 
     setIsLoading(false);
   };
@@ -109,7 +111,7 @@ export default function Login() {
   return (
     <main className={styles.main}>
       <div className={styles.header}>
-        <header />
+        <header data-tauri-drag-region />
         <Logo />
         <img
           src={mode === "dark" ? bgDark : bgLight}

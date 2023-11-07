@@ -123,7 +123,7 @@ export default function Register() {
 
   return (
     <main className={styles.main}>
-      <header className={styles.header} />
+      <header className={styles.header} data-tauri-drag-region />
       <div className={styles.title}>
         <Link to="/login">
           <Icon pressable buttonSize={36} type="arrow-1-left" />
