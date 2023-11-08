@@ -1,6 +1,7 @@
-import { Icon, IconType } from '@insd47/library';
-import React, { PropsWithChildren, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Icon, IconType } from "@insd47/library";
+import React, { PropsWithChildren, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import defaultProfile from "@/assets/images/default-profile.png";
 
 import {
   StyledBottom,
@@ -9,7 +10,7 @@ import {
   StyledItem,
   StyledNavigation,
   StyledProfiles,
-} from './styles';
+} from "./styles";
 
 export const Frame: React.FC<PropsWithChildren> = ({ children }) => {
   const [isResizing, setIsResizing] = useState(false);
@@ -28,9 +29,9 @@ export const Frame: React.FC<PropsWithChildren> = ({ children }) => {
           {children}
           <StyledBottom>
             <StyledProfiles>
-              <img alt='profile' />
+              <img alt="profile" src={defaultProfile} />
               <span>인성</span>
-              <Icon size={16} type='arrow-2-right' />
+              <Icon size={16} type="arrow-2-right" />
             </StyledProfiles>
           </StyledBottom>
         </>
@@ -65,7 +66,7 @@ export const Item = ({
   const { pathname } = useLocation();
 
   const isActive =
-    path === '/' ? path === pathname : pathname.slice(0, path.length) === path;
+    path === "/" ? path === pathname : pathname.slice(0, path.length) === path;
 
   return (
     <Link to={path}>

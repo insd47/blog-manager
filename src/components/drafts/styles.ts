@@ -34,6 +34,7 @@ export const StyledSmallButton = styled.div<
   border-right: 1px solid ${({ theme }) => theme.colors.box.border[2] + ""};
   position: relative;
   z-index: 5;
+  cursor: default;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.box.foreground[1] + ""};
@@ -73,6 +74,7 @@ export const StyledTab = styled.div<{
     flex-shrink: 0;
     white-space: nowrap;
     word-break: break-all;
+    cursor: default;
 
     &:after {
       content: "";
