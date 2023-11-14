@@ -7,8 +7,8 @@ extern crate objc;
 
 use api::request_with_token;
 use reqwest::Method;
-use store::{preference::PreferenceStore, WindowSize, PREFERENCES, WINDOW_SIZE};
-use tauri::{Manager, WindowEvent};
+use store::{preference::PreferenceStore, WindowPreference, PREFERENCES, WINDOW_PREFERENCE};
+use tauri::{LogicalSize, Manager, WindowEvent};
 
 mod window_ext;
 use window_ext::WindowExt;
@@ -57,20 +57,21 @@ fn main() {
         if win.label() == "main" {
           match win.inner_size() {
             Ok(size) => {
-              let size = size.to_logical(win.scale_factor().unwrap());
-
-              let window_size = WindowSize {
+              let size: LogicalSize<u32> = size.to_logical(win.scale_factor().unwrap());
+              let window_preference = WindowPreference {
+                fullscreen: win.is_maximized().unwrap_or(false),
+                maximized: win.is_fullscreen().unwrap_or(false),
                 width: size.width,
                 height: size.height,
               };
 
-              println!("{:?}", window_size);
+              let store =
+                PreferenceStore::new(WINDOW_PREFERENCE, PREFERENCES, window_preference).unwrap();
 
-              let store = PreferenceStore::new(WINDOW_SIZE, PREFERENCES, window_size).unwrap();
-              let _ = store.save(window_size);
+              let _ = store.save(window_preference);
             }
-            Err(_) => {}
-          }
+            Err(_) => return,
+          };
         }
       }
 

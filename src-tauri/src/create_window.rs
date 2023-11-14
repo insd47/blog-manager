@@ -2,7 +2,7 @@ use tauri::TitleBarStyle::Overlay;
 use tauri::{Manager, Runtime, Window, WindowBuilder, WindowUrl};
 
 use crate::store::preference::PreferenceStore;
-use crate::store::{WindowSize, PREFERENCES, WINDOW_SIZE};
+use crate::store::{WindowPreference, PREFERENCES, WINDOW_PREFERENCE};
 use crate::window_ext::WindowExt;
 
 pub fn create_main_window<R, M>(manager: &M) -> Window<R>
@@ -11,31 +11,34 @@ where
   M: Manager<R>,
 {
   let store = PreferenceStore::new(
-    WINDOW_SIZE,
+    WINDOW_PREFERENCE,
     PREFERENCES,
-    WindowSize {
+    WindowPreference {
       width: 1600u32,
       height: 1000u32,
+      maximized: false,
+      fullscreen: false,
     },
   )
   .unwrap();
 
-  let mut window_size = store.get().unwrap();
-  println!("{:?}", window_size);
+  let mut preference = store.get().unwrap();
 
-  if window_size.width < 1000 {
-    window_size.width = 1000;
+  if preference.width < 1000 {
+    preference.width = 1000;
   }
 
-  if window_size.height < 600 {
-    window_size.height = 600;
+  if preference.height < 600 {
+    preference.height = 600;
   }
+
+  let _ = store.save(preference);
 
   let window = WindowBuilder::new(manager, "main", WindowUrl::App("index.html".into()))
     .fullscreen(false)
     .resizable(true)
     .title("Manager")
-    .inner_size(window_size.width as f64, window_size.height as f64)
+    .inner_size(preference.width as f64, preference.height as f64)
     .min_inner_size(1000., 600.)
     .title_bar_style(Overlay)
     .hidden_title(true)

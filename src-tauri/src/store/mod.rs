@@ -1,7 +1,7 @@
 use keyring::Entry;
 
 pub mod preference;
-use serde::{Deserialize, Serialize};
+use serde::{de, Deserialize, Serialize};
 
 // use state::InitCell;
 
@@ -39,11 +39,13 @@ pub const REFRESH_TOKEN: &str = "REFRESH_TOKEN";
 
 // preference constants
 pub const PREFERENCES: &str = "PREFERENCES";
-pub const WINDOW_SIZE: &str = "WINDOW_SIZE";
+pub const WINDOW_PREFERENCE: &str = "WINDOW_PREFERENCE";
 
 // preference structures
 #[derive(Serialize, Deserialize, Copy, Clone, Debug)]
-pub struct WindowSize {
+pub struct WindowPreference {
+  pub maximized: bool,
+  pub fullscreen: bool,
   pub width: u32,
   pub height: u32,
 }
