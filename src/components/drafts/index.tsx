@@ -44,7 +44,7 @@ export default function Drafts() {
     <StyledDrafts>
       {platform === "darwin" && <StyledTrafficLights data-tauri-drag-region />}
       <StyledSmallButton isActive={!isDraft}>
-        <Icon type={!isDraft ? "grid-f" : "grid"} size={18} />
+        <Icon type={!isDraft ? "home-f" : "home"} size={18} />
       </StyledSmallButton>
       <StyledTabList>
         <Tab title="NextJS를 이용하여 부대찌개 깔끔하게 잘 끓이는 법" />

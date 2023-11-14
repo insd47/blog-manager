@@ -22,7 +22,8 @@
       },
       "window": {
         "all": false,
-        "startDragging": true
+        "startDragging": true,
+        "setAlwaysOnTop": true
       }
     },
     "bundle": {

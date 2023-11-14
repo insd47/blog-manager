@@ -15,6 +15,7 @@ dotenv = "0.15.0"
 
 [dependencies]
 tauri = { version = "1.5", features = [
+  "window-set-always-on-top",
   "window-start-dragging",
   "os-all",
   "shell-open",
@@ -26,8 +27,8 @@ objc = "0.2.7"
 cocoa = "0.25.0"
 serde_json = "1.0"
 keyring = "2.0.5"
-preferences = "1.1.0"
 whoami = "1.4.1"
+state = "0.6.0"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem
