@@ -1,3 +1,3 @@
 export default function PostsAdd() {
-  return <main>POSTS/ADD</main>;
+  return <main>새 게시물</main>;
 }

@@ -16,12 +16,12 @@ pub struct PreferenceStore<'a, T> {
 
 impl<'a, T> PreferenceStore<'a, T>
 where
-  T: Serialize + DeserializeOwned + Copy + Clone + Debug,
+  T: Serialize + DeserializeOwned + Clone + Debug,
 {
   pub(crate) fn new(
     key: &'a str,
     dir_name: &str,
-    default_value: T,
+    default_value: &T,
   ) -> Result<PreferenceStore<'a, T>, u16> {
     // os별 기본 경로
     let base_dir = match std::env::consts::OS {
@@ -60,22 +60,19 @@ where
         file.unlock().map_err(|_| 602u16)?;
 
         // 파일 구조가 다르면 기본값으로 생성
-        match serde_json::from_value(json_value[key].clone()) {
+        match serde_json::from_value::<T>(json_value.clone()[key].clone()) {
           Ok(value) => value,
-          Err(_) => default_value,
+          Err(_) => default_value.clone(),
         }
       }
       // 파일이 없으면 기본값으로 생성
-      Err(e) => {
-        println!("error: {}", e);
+      Err(_e) => {
         let json_value = json!({ key: &default_value });
         serde_json::to_writer(&file, &json_value).map_err(|_| 602u16)?;
         file.unlock().map_err(|_| 602u16)?;
-        default_value
+        default_value.clone()
       }
     };
-
-    println!("{}: {:?}", key, value);
 
     Ok(PreferenceStore {
       key,
@@ -84,7 +81,7 @@ where
     })
   }
 
-  pub(crate) fn save(&self, value: T) -> Result<(), u16> {
+  pub(crate) fn save(&self, value: &T) -> Result<(), u16> {
     let mut file = OpenOptions::new()
       .read(true)
       .write(true)
@@ -110,7 +107,7 @@ where
   }
 
   pub(crate) fn get(&self) -> Result<T, u16> {
-    let value = self.value;
+    let value = self.value.clone();
     Ok(value)
   }
 

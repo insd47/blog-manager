@@ -67,7 +67,16 @@ pub async fn api_user_renew() -> Result<String, u16> {
   let refresh_token = store.get().map_err(|_| 401u16)?;
 
   let client = create_client();
-  let res = match client.post(&url).bearer_auth(refresh_token).send().await {
+  let device_name = devicename();
+  let params = HashMap::from([("deviceName", device_name.as_str())]);
+
+  let res = match client
+    .post(&url)
+    .json(&params)
+    .bearer_auth(refresh_token)
+    .send()
+    .await
+  {
     Ok(res) if res.status().is_success() => res,
     Ok(res) => {
       return Err(res.status().as_u16());

@@ -1,21 +1,20 @@
 use keyring::Entry;
 
 pub mod preference;
-use serde::{de, Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 
 // use state::InitCell;
 
 // states
 
 // keyring
-pub struct KeyStore<'a> {
-  id: &'a str,
+pub struct KeyStore {
   entry: Entry,
 }
-impl KeyStore<'_> {
+impl KeyStore {
   pub(crate) fn new(id: &str) -> Result<KeyStore, u16> {
     let entry = Entry::new(env!("APP_ID"), id).map_err(|_| 601u16)?;
-    Ok(KeyStore { id, entry })
+    Ok(KeyStore { entry })
   }
 
   pub(crate) fn save(&self, token: &str) -> Result<(), u16> {
@@ -37,15 +36,22 @@ impl KeyStore<'_> {
 pub const ACCESS_TOKEN: &str = "ACCESS_TOKEN";
 pub const REFRESH_TOKEN: &str = "REFRESH_TOKEN";
 
-// preference constants
-pub const PREFERENCES: &str = "PREFERENCES";
-pub const WINDOW_PREFERENCE: &str = "WINDOW_PREFERENCE";
+// preference directories
+pub const PREFERENCES: &str = "preferences";
+
+// preference keys
+pub const WINDOW_PREFERENCE: &str = "window_preference";
 
 // preference structures
-#[derive(Serialize, Deserialize, Copy, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct WindowPreference {
   pub maximized: bool,
   pub fullscreen: bool,
   pub width: u32,
   pub height: u32,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct AccessTokenExpires {
+  pub date: String,
 }

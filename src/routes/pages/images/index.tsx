@@ -8,19 +8,13 @@ export default function Main() {
     <MainLayout
       toolbarLeft={[
         <div className={styles.search}>
-          <Textfield
-            stretch
-            size="small"
-            icon="search"
-            placeholder="id, 제목, 태그 등"
-          />
+          <Textfield stretch icon="search" size="small" placeholder="검색" />
         </div>,
-        <Button size="small" icon="tag" />,
+        <Button size="small" icon="filter" />,
       ]}
       toolbarRight={[
-        <Button size="small" icon="upload" />,
-        <Button type="filled" size="small" icon="plus">
-          새 게시물
+        <Button type="filled" size="small" icon="upload">
+          파일 업로드
         </Button>,
       ]}
     ></MainLayout>

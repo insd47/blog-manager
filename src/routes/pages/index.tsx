@@ -4,8 +4,9 @@ import Posts from "./posts";
 import Tags from "./tags";
 import Images from "./images";
 import Meta from "./meta";
+import { RouteObject } from "react-router-dom";
 
-const pages = [
+const pages: RouteObject[] = [
   {
     path: "/",
     element: <Main />,

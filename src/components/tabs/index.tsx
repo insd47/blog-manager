@@ -1,4 +1,4 @@
-import { Icon } from "@insd47/library";
+import { Icon, useRightClickMenu } from "@insd47/library";
 import {
   Platform as TauriPlatform,
   platform as tauriPlatform,
@@ -13,7 +13,7 @@ import {
 } from "./styles";
 
 import type { TabProps } from "./types";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const Tab = ({ title, isActive }: TabProps) => {
@@ -27,8 +27,9 @@ const Tab = ({ title, isActive }: TabProps) => {
   );
 };
 
-export default function Drafts() {
+export default function Tabs() {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const [platform, setPlatform] = useState<TauriPlatform>("darwin");
 
@@ -37,13 +38,27 @@ export default function Drafts() {
     init();
   }, []);
 
-  const draftURL = "/posts/add";
-  const isDraft = pathname.slice(0, draftURL.length) === draftURL;
+  const editorURL = "/editor/add";
+  const isDraft = pathname.slice(0, editorURL.length) === editorURL;
+
+  const [plusMenu, plusRef] = useRightClickMenu<HTMLDivElement>([
+    {
+      type: "action",
+      icon: "plus",
+      name: "새 게시물",
+    },
+    { type: "seperator" },
+    {
+      type: "action",
+      icon: "upload",
+      name: ".md 파일 불러오기",
+    },
+  ]);
 
   return (
     <StyledDrafts>
       {platform === "darwin" && <StyledTrafficLights data-tauri-drag-region />}
-      <StyledSmallButton isActive={!isDraft}>
+      <StyledSmallButton onClick={() => navigate("/")} isActive={!isDraft}>
         <Icon type={!isDraft ? "home-f" : "home"} size={18} />
       </StyledSmallButton>
       <StyledTabList>
@@ -53,8 +68,9 @@ export default function Drafts() {
         <Tab title="제목 없음 3" />
         <Tab title="제목 없음 4" />
         <Tab title="제목 없음 5" />
-        <StyledSmallButton style={{ width: 42 }}>
+        <StyledSmallButton ref={plusRef} style={{ width: 42 }}>
           <Icon type="plus" size={18} />
+          {plusMenu}
         </StyledSmallButton>
         <div data-tauri-drag-region style={{ flex: 1 }} />
       </StyledTabList>

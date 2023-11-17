@@ -21,23 +21,34 @@ export const Frame: React.FC<PropsWithChildren> = ({ children }) => {
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
   const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 });
   const [isAlwaysOnTop, setIsAlwaysOnTop] = useState(false);
+  const [width, setWidth] = useState(240);
 
   const profileRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
+  const setMenuPos = () => {
     if (profileRef.current) {
       const { x, y, width } = profileRef.current?.getBoundingClientRect();
 
       setContextMenuPos({
-        x: x + width,
+        x: x + width - 10,
         y: y,
       });
     }
+  };
+
+  useEffect(() => {
+    const width = localStorage.getItem("navigation-width");
+    if (width) setWidth(parseInt(width));
+
+    window.addEventListener("resize", setMenuPos);
+    return () => window.removeEventListener("resize", setMenuPos);
   }, []);
 
-  const { colors, change, mode, system } = useTheme();
-  console.log(system, mode);
+  useEffect(() => {
+    setMenuPos();
+  }, [isResizing]);
 
+  const { colors, change, mode, system } = useTheme();
   const contextMenuItems: ContextMenuItem[] = [
     {
       type: "content",
@@ -114,15 +125,16 @@ export const Frame: React.FC<PropsWithChildren> = ({ children }) => {
   ];
   return (
     <StyledNavigation
-      width={240}
+      width={width}
       height={0}
       minConstraints={[180, 0]}
-      maxConstraints={[
-        Math.min(window.innerWidth - 180, window.innerWidth / 3),
-        0,
-      ]}
+      maxConstraints={[320, 0]}
       onResizeStart={() => setIsResizing(true)}
-      onResizeStop={() => setIsResizing(false)}
+      onResizeStop={(_, d) => {
+        setIsResizing(false);
+        setWidth(d.size.width);
+        localStorage.setItem("navigation-width", d.size.width.toString());
+      }}
       handle={<StyledHandle isResizing={isResizing} />}
       children={
         <>
@@ -130,6 +142,7 @@ export const Frame: React.FC<PropsWithChildren> = ({ children }) => {
           <StyledBottom>
             <StyledProfiles
               ref={profileRef}
+              isActive={isContextMenuOpen}
               onClick={() => setIsContextMenuOpen(!isContextMenuOpen)}
             >
               <img alt="profile" src={defaultProfile} />

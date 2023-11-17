@@ -13,7 +13,7 @@ where
   let store = PreferenceStore::new(
     WINDOW_PREFERENCE,
     PREFERENCES,
-    WindowPreference {
+    &WindowPreference {
       width: 1600u32,
       height: 1000u32,
       maximized: false,
@@ -32,10 +32,12 @@ where
     preference.height = 600;
   }
 
-  let _ = store.save(preference);
+  let _ = store.save(&preference);
 
   let window = WindowBuilder::new(manager, "main", WindowUrl::App("index.html".into()))
-    .fullscreen(false)
+    .fullscreen(preference.fullscreen)
+    .maximized(preference.maximized)
+    .maximizable(true)
     .resizable(true)
     .title("Manager")
     .inner_size(preference.width as f64, preference.height as f64)

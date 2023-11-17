@@ -10,15 +10,16 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@blocknote/core": "^0.9.6",
+    "@blocknote/react": "^0.9.6",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@insd47/library": "0.5.11-alpha",
+    "@insd47/library": "0.6.2-alpha",
     "@tauri-apps/api": "^1.5.0",
     "overlayscrollbars": "^2.4.4",
     "overlayscrollbars-react": "^0.5.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-md-editor": "^0.2.2",
     "react-resizable": "^3.0.5",
     "react-router-dom": "^6.17.0",
     "react-transition-group": "^4.4.5"

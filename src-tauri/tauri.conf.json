@@ -23,7 +23,12 @@
       "window": {
         "all": false,
         "startDragging": true,
-        "setAlwaysOnTop": true
+        "setAlwaysOnTop": true,
+        "maximize": true,
+        "unmaximize": true,
+        "close": true,
+        "minimize": true,
+        "unminimize": true
       }
     },
     "bundle": {
